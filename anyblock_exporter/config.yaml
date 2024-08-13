@@ -1,0 +1,49 @@
+# Anyblock Exporter Configuration
+
+# Timestamp decoding, accepted fields are yes or no
+# Attempts to identify unix timestamps in relations and convert them to EST
+decode_timestamps: yes
+
+# Ignored properties, won't be part of export.
+ignored_properties:
+  - name
+  - snippet
+  - featuredRelations
+  - type
+  - layout
+  - creator
+  - id
+  - backlinks
+  - sourceObject
+  - lastModifiedBy
+  - spaceId
+  - links
+  - lastModifiedDate
+  - lastOpenedDate
+  - tag
+  - Last Updated
+  - Object restrictions
+  - Source file path
+  - setOf
+  - restrictions
+  - syncStatus
+  - syncError
+  - syncDate
+  - Space
+  - iconEmoji
+  - iconImage
+  - Archive
+
+# Input and output folders
+input_folder: anyblock_files
+output_folder: markdown_files
+
+# Logging
+log_level: INFO
+log_file: anytype_conversion.log
+
+# Relations as Markdown/Obsidian style links, allows the following options
+# all - Turns all relations into Markdown/Obsidian style links, eg wraps the relation value in "[[value]]"
+# select - only wraps relations that have specific fixed selections, eg are not free form text (think selects and multi selects) in "[[value]]"
+# blank or anything else - does not wrap any relations and displays them all as relation: value
+turn_relations_into_obsidian_links: select
