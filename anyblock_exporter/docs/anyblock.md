@@ -1,5 +1,7 @@
 # Anytype to Markdown Exporter
 
+Feel free to use this document, however, this was not built for human consumption. As part of my process for trying to parse through Anyblock using AI I had to create this document to track what we've learned so far to make sure nothing was missed or forgotten. As such, this is a document built entirely by and effectively entirely for AI. However, there is likely some good information in here, so I kept it in the repo in case anyone found it useful. Just beware, it's a bit of a frankenstein document, with multiple contributions to it at various points in the process, so it probably repeats itself, is plain off in some areas and just isn't particularly fun to read or coherently presented, but there is likely good information in here especially if troubleshooting is needed.
+
 ## 1. Project Overview
 
 ### Brief Description
