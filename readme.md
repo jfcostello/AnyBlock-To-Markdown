@@ -33,20 +33,49 @@ Anyblock Exporter is an open-source tool designed to convert Anytype exports int
 ## Requirements
 
 - Python 3.7 or higher
-- PyYAML library
 
 ## Installation
 
 1. Clone the repository:
-   ```
+   Open 'Terminal'
+   Navigate to the folder you want to put the tool in, and then type the following
    git clone https://github.com/yourusername/anyblock-exporter.git
    cd anyblock-exporter
-   ```
+   
 
-2. Install the required dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
+If you're familiar with Python and have it installed you can skip right to [Usage](#usage) if you're less comfortable then you can follow these steps
+
+2. Install Python:
+   If you don't have Python installed on your computer, follow these steps to install it:
+
+   - **Windows:**
+     1. Go to the official Python website: https://www.python.org/
+     2. Click on the "Downloads" tab and select "Python 3.x.x" for Windows.
+     3. Once the installer is downloaded, open it.
+     4. Make sure to check the box that says "Add Python to PATH" before clicking "Install Now".
+     5. Follow the prompts to complete the installation.
+
+   - **macOS:**
+     1. Go to the official Python website: https://www.python.org/
+     2. Click on the "Downloads" tab and select "Python 3.x.x" for macOS.
+     3. Once the installer is downloaded, open it.
+     4. Follow the prompts to complete the installation.
+
+   - **Linux:**
+     1. Open a terminal.
+     2. Use the package manager specific to your distribution to install Python. For example, on Ubuntu, you can use the following commands:
+        ```
+        sudo apt update
+        sudo apt install python3
+        ```
+     3. Follow the prompts to complete the installation.
+
+4. Verify the installation:
+   1. Open a terminal or command prompt.
+   2. Type `python --version` and press Enter.
+   3. You should see the installed Python version displayed. If you see a version number, Python is installed correctly.
+
+Now you are ready to use the Anyblock Exporter tool!
 
 ## Usage
 
