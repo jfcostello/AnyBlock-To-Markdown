@@ -33,6 +33,7 @@ Anyblock Exporter is an open-source tool designed to convert Anytype exports int
 ## Requirements
 
 - Python 3.7 or higher
+- python modules: tqdm, pyyaml, chardet
 
 ## Installation
 
