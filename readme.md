@@ -1,7 +1,6 @@
 # Anyblock Exporter
 
-Anyblock Exporter is an open-source tool designed to convert Anytype exports into Markdown format. This tool allows users to easily transform their Anytype content into a more universal and portable format, facilitating content migration, backup, or integration with other Markdown-compatible systems. Note, this tool was built with a goal of exporting my own data, so had not been tested thoroughly and is liable to break or be missing edge cases I didn't encounter. As such, please either send feedback by opening an issue on Github, emailing jamie@jfcostello.com or, if you want, submit a pull request!
-
+Anyblock Exporter is an open-source tool designed to convert Anytype exports into Markdown format. This tool allows users to easily transform their Anytype content into a more universal and portable format, facilitating content migration, backup, or integration with other Markdown-compatible systems. Note, this tool was orignally built with a goal of exporting my own data, so had not been tested thoroughly and is liable to break or be missing edge cases I didn't encounter. As such, please either send feedback by opening an issue on Github, or, if you want, submit a pull request! Thanks to some great community members it has continued to be iterated upon, so always check back for updates and open an issue here if something isn't working
 ## Table of Contents
 
 - [Features](#features)
