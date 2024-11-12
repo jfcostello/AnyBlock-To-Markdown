@@ -44,9 +44,13 @@ Anyblock Exporter is an open-source tool designed to convert Anytype exports int
 
    Open 'Terminal'
    Navigate to the folder you want to put the tool in, and then type the following:
+   ```
    git clone https://github.com/yourusername/anyblock-exporter.git
+   ```
    to open the folder in terminal, type:
+   ```
    cd anyblock-exporter
+   ```
 
 #### Option 2: Download zip 
 
@@ -104,16 +108,24 @@ Note, this is optional, and you can just run the script with the default setting
 Open a terminal and navigate to the project directory. On windows, to make it easy, you can right click the folder in explorer, select 'open in terminal'. For Mac, you can open the folder in finder, right click and select 'new terminal at folder'.
 
 Once open, just run the script. To do so, type:
+```
 python anyblock_exporter.py
+```
 
 If you get an error saying 'command not found: python' some instances, you may need to instead type
+```
 python3 anyblock_exporter.py
+```
 
 If you get an error about missing modules, you can install them by typing
 
+```
 pip install -r requirements.txt
+```
 OR, if you get an error about pip not being found, you can install the modules by typing
+```
 pip3 install -r requirements.txt
+```
 
 And then try running the script again.
 
