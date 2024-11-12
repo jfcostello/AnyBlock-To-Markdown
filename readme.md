@@ -220,5 +220,9 @@ If set to all, it does the same as 'some' except it'll also wrap plain text rela
 
 Contributions to the Anyblock Exporter are welcome! Please feel free to submit pull requests, create issues or spread the word.
 
+## License
+
+None, do whatever you want with this code, so long as you're helping get yours or anyone elses data into a universal format. Submitting PRs here is the best way to do it, but fork this code, modify it, do whatever you want with it. I've basically gotten what I needed from it, so I'd just be happy if it continues to help others,.
+
 
 
