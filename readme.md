@@ -1,15 +1,17 @@
 # Anyblock Exporter
 
-Anyblock Exporter is an open-source tool designed to convert Anytype exports into Markdown format. This tool allows users to easily transform their Anytype content into a more universal and portable format, facilitating content migration, backup, or integration with other Markdown-compatible systems. Note, this has been built but has not been tested thoroughly, so is liable to break and updates are happening often. Please send any feedback to jamie@jfcostello.com or, if you want, submit a pull request!
+Anyblock Exporter is an open-source tool designed to convert Anytype exports into Markdown format. This tool allows users to easily transform their Anytype content into a more universal and portable format, facilitating content migration, backup, or integration with other Markdown-compatible systems. Note, this tool was built with a goal of exporting my own data, so had not been tested thoroughly and is liable to break or be missing edge cases I didn't encounter. As such, please either send feedback by opening an issue on Github, emailing jamie@jfcostello.com or, if you want, submit a pull request!
 
 ## Table of Contents
 
 - [Features](#features)
 - [Requirements](#requirements)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Preparing Your Anytype Export](#preparing-your-anytype-export)
-  - [Running the Converter](#running-the-converter)
+- [How to download and use the tool](#how-to-download-and-use-the-tool)
+  - [Step 1: Downloading the files](#step-1-downloading-the-files)
+  - [Step 2: Install Pyton](#step-2-install-pyton)
+  - [Step 3: Export your Anytype data](#step-3-export-your-anytype-data)
+  - [Step 4: Customize the config.yaml file](#step-4-customize-the-configyaml-file)
+  - [Step 5: Run the script](#step-5-run-the-script)
 - [Configuration](#configuration)
   - [config.yaml](#configyaml)
 - [Conversion Process](#conversion-process)
@@ -17,7 +19,6 @@ Anyblock Exporter is an open-source tool designed to convert Anytype exports int
   - [Relation Handling](#relation-handling)
   - [Block Conversion](#block-conversion)
 - [Project Structure](#project-structure)
-- [Technical Details](#technical-details)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -35,18 +36,27 @@ Anyblock Exporter is an open-source tool designed to convert Anytype exports int
 - Python 3.7 or higher
 - python modules: tqdm, pyyaml, chardet
 
-## Installation
+## How to download and use the tool
 
-1. Clone the repository:
+### Step 1: Downloading the files
+
+#### Option 1: Git clone
+
    Open 'Terminal'
-   Navigate to the folder you want to put the tool in, and then type the following
+   Navigate to the folder you want to put the tool in, and then type the following:
    git clone https://github.com/yourusername/anyblock-exporter.git
+   to open the folder in terminal, type:
    cd anyblock-exporter
-   
 
-If you're familiar with Python and have it installed you can skip right to [Usage](#usage) if you're less comfortable then you can follow these steps
+#### Option 2: Download zip 
 
-2. Install Python:
+If you're not familiar with Git commands or using the terminal, you may find it easier to just download the zip file
+Goto https://github.com/yourusername/anyblock-exporter, click the green 'Code' button, then click 'Download ZIP'
+Extract the zip file to a folder and remember where you put it for later
+
+### Step 2: Install Pyton
+
+Install Python:
    If you don't have Python installed on your computer, follow these steps to install it:
 
    - **Windows:**
@@ -71,29 +81,43 @@ If you're familiar with Python and have it installed you can skip right to [Usag
         ```
      3. Follow the prompts to complete the installation.
 
-4. Verify the installation:
+4. Optional - verify the installation:
    1. Open a terminal or command prompt.
    2. Type `python --version` and press Enter.
    3. You should see the installed Python version displayed. If you see a version number, Python is installed correctly.
 
-Now you are ready to use the Anyblock Exporter tool!
-
-## Usage
-
-### Preparing Your Anytype Export
+### Step 3: Export your Anytype data
 
 1. In Anytype, export your data using the Anyblock option, selecting the JSON format. You can export your entire space, parts of it, or just one page.
-2. Place all the exported JSON files in the `anyblock_files` directory of this project (Note, even if you export just one page, you'll end up with hundreds of JSON files and you'll need them all)
+2. Place all the exported JSON files in the `anyblock_files` directory of this project (Note, even if you export just one page, you'll end up with hundreds of JSON files and you'll need them all). Ensure all files you want to convert are in the folder rather than in any subfolders.
 
-### Running the Converter
+### Step 4: Optional - Customize the config.yaml file
 
-1. Open a terminal and navigate to the project directory.
-2. Run the conversion script:
-   ```
-   python anyblock_exporter.py
-   ```
-3. The converted Markdown files will be created in the `markdown_files` directory.
+In the /anyblock_exporter/ directory, you'll see a file called config.yaml. Open this in a text editor, one like notepad will do, and you can customize certain aspects of the conversion process. You don't need to use terminal to access this, you can open it in windows explorer or finder or whatever you use, find config.yaml and open it with any old text editor.
 
+To see what each setting does, look below at the [Configuration](#configuration) section
+
+Note, this is optional, and you can just run the script with the default settings
+
+### Step 5: Run the script
+
+Open a terminal and navigate to the project directory. On windows, to make it easy, you can right click the folder in explorer, select 'open in terminal'. For Mac, you can open the folder in finder, right click and select 'new terminal at folder'.
+
+Once open, just run the script. To do so, type:
+python anyblock_exporter.py
+
+If you get an error saying 'command not found: python' some instances, you may need to instead type
+python3 anyblock_exporter.py
+
+If you get an error about missing modules, you can install them by typing
+
+pip install -r requirements.txt
+OR, if you get an error about pip not being found, you can install the modules by typing
+pip3 install -r requirements.txt
+
+And then try running the script again.
+
+The converted Markdown files will be created in the `markdown_files` directory.
 
 ## Configuration
 
@@ -110,7 +134,7 @@ ignored_properties:
   - snippet
   - etc
 
-Put the list of all properties (relations) you want to ignore here. There's alot of metadata, and it can be verbose without this, so default sets a reasonable amount of ignores. But if something is not showing up for you, come here and see if removing some of these will reveal it
+**This is the most important setting**. Put the list of all properties (relations) you want to ignore here. There's alot of metadata, and it can be verbose without this, so default sets a reasonable amount of ignores. But if something is not showing up for you, come here and see if removing some of these will reveal it. Or, if you see Anytype adding weird things to the metadata, you can add them here to ignore them.
 
 input_folder: anyblock_files
 output_folder: markdown_files
@@ -121,6 +145,14 @@ log_level: INFO
 log_file: anytype_conversion.log
 
 Sets the log level and name of the file the logs are dumped in, mainly used for troubleshooting. If nothing is going wrong, no need to worry
+
+The exporter supports the following standard Python logging levels, from least to most severe:
+
+- **DEBUG**: Detailed information, typically useful for diagnosing problems. Shows all conversion steps and detailed processing information.
+- **INFO** (Default): Confirmation that things are working as expected. Shows general progress and successful operations.
+- **WARNING**: Indicates something unexpected happened or may happen in the near future (e.g., 'disk space low'). The program is still working as expected.
+- **ERROR**: Due to a more serious problem, the software has not been able to perform some function. Shows failed operations that need attention.
+- **CRITICAL**: A serious error indicating the program itself may be unable to continue running.
 
 turn_relations_into_obsidian_links: 
 
@@ -172,24 +204,9 @@ If set to all, it does the same as 'some' except it'll also wrap plain text rela
   - `utils.py`: Utility functions
   - `logger.py`: Logging setup
 
-## Technical Details
-
-- The converter uses a multi-step process to handle Anytype's complex data structure:
-  1. JSON parsing: Reads and interprets the Anytype JSON export files.
-  2. Object identification: Identifies main content files and their associated data.
-  3. Relation extraction: Processes and formats relation data.
-  4. Block conversion: Converts individual Anytype blocks to Markdown syntax.
-  5. File handling: Manages file attachments and updates references.
-  6. Markdown compilation: Assembles the converted elements into a cohesive Markdown document.
-
-- The project uses Python's built-in `logging` module for comprehensive logging of the conversion process.
-- Error handling is implemented to gracefully handle issues with individual files or blocks without stopping the entire conversion process.
-- The converter is designed to be memory-efficient, processing files one at a time rather than loading all data into memory at once.
-
 ## Contributing
 
 Contributions to the Anyblock Exporter are welcome! Please feel free to submit pull requests, create issues or spread the word.
 
-## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+
