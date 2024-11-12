@@ -11,6 +11,7 @@ class RelationHandler:
         self.decode_timestamps = config.get('decode_timestamps', True)
         self.ignored_properties = config.get('ignored_properties', [])
         self.link_mode = config.get('turn_relations_into_obsidian_links', 'select')
+        self.logger = logging.getLogger("anyblock_exporter")
 
     def convert_timestamp_if_applicable(self, value: Any) -> Tuple[str, bool]:
         is_date = False
@@ -22,7 +23,7 @@ class RelationHandler:
                 is_date = True
                 return adjusted_date.strftime("%Y-%m-%d"), is_date
             except Exception as e:
-                logging.warning(f"Failed to convert timestamp {value}: {str(e)}")
+                self.logger.warning(f"Failed to convert timestamp {value}: {str(e)}")
         return self.get_relation_option_name(value), is_date
 
     def extract_relations(self, main_content: Dict[str, Any]) -> List[str]:
@@ -56,7 +57,7 @@ class RelationHandler:
                 formatted_relations.append(f"{relation_name}:")
                 formatted_relations.extend(f" - {value}" for value in values)
 
-        logging.debug(f"Extracted relations: {formatted_relations}")
+        self.logger.debug(f"Extracted relations: {formatted_relations}")
         return formatted_relations
 
     def format_relation_value(self, value: Any, key: str) -> str:
@@ -92,7 +93,7 @@ class RelationHandler:
                 self.relation_cache[relation_key] = obj['snapshot']['data']['details']
                 return self.relation_cache[relation_key]
 
-        logging.warning(f"Relation info not found for key: {relation_key}")
+        self.logger.warning(f"Relation info not found for key: {relation_key}")
         return {}
 
     def get_relation_option_name(self, option_id: str) -> str:

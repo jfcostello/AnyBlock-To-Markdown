@@ -24,6 +24,7 @@ class AnytypeConverter:
         self.json_objects = []  # This will store all the JSON objects
         self.relation_handler = None  # Initialize later after reading JSON files
         self.file_handler = FileHandler(self.attachments_folder)
+        self.logger = logging.getLogger("anyblock_exporter")
 
     def read_json_files(self) -> None:
         try:
@@ -43,7 +44,7 @@ class AnytypeConverter:
                                 json_data = json.load(file)
                                 self.json_objects.append(json_data)
                         except (json.JSONDecodeError, UnicodeDecodeError) as e:
-                            logging.warning(f"Error decoding JSON in file {file_path} with default encoding: {str(e)}")
+                            self.logger.warning(f"Error decoding JSON in file {file_path} with default encoding: {str(e)}")
                             try:
                                 # Detect encoding for files that fail with default encoding
                                 with open(file_path, 'rb') as file:
@@ -55,11 +56,11 @@ class AnytypeConverter:
                                 with open(file_path, 'r', encoding=encoding) as file:
                                     json_data = json.load(file)
                                     self.json_objects.append(json_data)
-                                    logging.info(f"Successfully read file {file_path} with detected encoding: {encoding}")
+                                    self.logger.info(f"Successfully read file {file_path} with detected encoding: {encoding}")
                             except (json.JSONDecodeError, IOError) as e:
-                                logging.error(f"Error decoding JSON in file {file_path} with detected encoding: {str(e)}")
+                                self.logger.error(f"Error decoding JSON in file {file_path} with detected encoding: {str(e)}")
                             except Exception as e:
-                                logging.error(f"An error occurred while reading file {file_path}: {str(e)}")
+                                self.logger.error(f"An error occurred while reading file {file_path}: {str(e)}")
                         
                         # Update progress bar
                         pbar.update(1)
@@ -70,19 +71,19 @@ class AnytypeConverter:
             if not self.json_objects:
                 raise JSONReadError("No valid JSON files were read")
             
-            logging.info(f"Read {len(self.json_objects)} JSON files")
+            self.logger.info(f"Read {len(self.json_objects)} JSON files")
 
             # Initialize RelationHandler after reading JSON files
             self.relation_handler = RelationHandler(self.json_objects)
         except Exception as e:
-            logging.error(f"An error occurred while reading JSON files: {str(e)}")
-            logging.error(traceback.format_exc()) # more detailed error traceback
+            self.logger.error(f"An error occurred while reading JSON files: {str(e)}")
+            self.logger.error(traceback.format_exc()) # more detailed error traceback
 
 
     def identify_main_content_files(self) -> List[Dict[str, Any]]:
         main_contents = [obj for obj in self.json_objects if obj.get('sbType') == 'Page']
         if not main_contents:
-            logging.error("No main content files found")
+            self.logger.error("No main content files found")
         return main_contents
 
     def extract_creation_date(self, main_content: Dict[str, Any]) -> str:
@@ -91,10 +92,10 @@ class AnytypeConverter:
             if created_date:
                 return datetime.fromtimestamp(created_date).strftime('%Y-%m-%d %H:%M:%S')
             else:
-                logging.warning("Creation date not found in main content file")
+                self.logger.warning("Creation date not found in main content file")
                 return "Unknown creation date"
         except KeyError as e:
-            logging.error(f"Error extracting creation date: {str(e)}")
+            self.logger.error(f"Error extracting creation date: {str(e)}")
             return "Unknown creation date"
         
     def process_nested_blocks(self, all_blocks: List[Dict[str, Any]], block_ids: List[str], depth: int = 0, processed_blocks: set = None) -> str:
@@ -169,7 +170,7 @@ class AnytypeConverter:
                 file_path = os.path.join(self.output_folder, f"{name}-{counter}{ext}")
                 counter += 1
                 if counter > 1000:  # Prevent infinite loop
-                    logging.error("Too many duplicate filenames, aborting.")
+                    self.logger.error("Too many duplicate filenames, aborting.")
                     return
             
             # Handle frontmatter
@@ -189,7 +190,7 @@ class AnytypeConverter:
                     # Reconstruct content with updated frontmatter
                     content = "---\n" + "\n".join(frontmatter) + "\n---\n" + "\n".join(content_lines[frontmatter_end+1:])
                 except ValueError:
-                    logging.error("Frontmatter is malformed or missing.")
+                    self.logger.error("Frontmatter is malformed or missing.")
                     frontmatter = []
             elif is_truncated:
                 # If no frontmatter and filename is truncated, add frontmatter with title
@@ -197,24 +198,24 @@ class AnytypeConverter:
             
             with open(file_path, 'w', encoding='utf-8') as file:
                 file.write(content)
-            logging.info(f"Markdown file created: {file_path}")
+            self.logger.info(f"Markdown file created: {file_path}")
         except Exception as e:
-            logging.error(f"Error writing Markdown file '{filename}': {str(e)}")
+            self.logger.error(f"Error writing Markdown file '{filename}': {str(e)}")
             fallback_filename = "untitled.md"
             counter = 1
             while os.path.exists(os.path.join(self.output_folder, fallback_filename)):
                 fallback_filename = f"untitled-{counter}.md"
                 counter += 1
                 if counter > 1000:  # Prevent infinite loop
-                    logging.error("Too many fallback filenames, aborting.")
+                    self.logger.error("Too many fallback filenames, aborting.")
                     return
             fallback_path = os.path.join(self.output_folder, fallback_filename)
             try:
                 with open(fallback_path, 'w', encoding='utf-8') as file:
                     file.write(content)
-                logging.info(f"Fallback Markdown file created: {fallback_path}")
+                self.logger.info(f"Fallback Markdown file created: {fallback_path}")
             except Exception as e:
-                logging.error(f"Failed to create fallback file: {str(e)}")
+                self.logger.error(f"Failed to create fallback file: {str(e)}")
 
     def process_all_files(self) -> None:
         try:
@@ -223,12 +224,12 @@ class AnytypeConverter:
             os.makedirs(self.attachments_folder, exist_ok=True)
             for main_content in main_contents:
                 try:
-                    logging.debug(f"Processing content: {main_content.get('id', 'Unknown ID')}")
+                    self.logger.debug(f"Processing content: {main_content.get('id', 'Unknown ID')}")
                     markdown_content = self.compile_markdown(main_content)
                     title = main_content['snapshot']['data']['details'].get('name', 'Untitled')
                     self.write_markdown_file(markdown_content, title)
                 except Exception as e:
-                    logging.error(f"Error processing file {main_content.get('id', 'Unknown ID')}: {str(e)}")
+                    self.logger.error(f"Error processing file {main_content.get('id', 'Unknown ID')}: {str(e)}")
             self.file_handler.copy_all_files()
         except Exception as e:
-            logging.error(f"Error in process_all_files: {str(e)}")
+            self.logger.error(f"Error in process_all_files: {str(e)}")

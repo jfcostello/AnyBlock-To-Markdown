@@ -2,6 +2,8 @@ import logging
 from typing import Dict, Any, List
 from anyblock_exporter.utils import format_inline_text, convert_table_to_markdown, format_latex_equation
 
+LOGGER = logging.getLogger("anyblock_exporter")
+
 def is_organizational_block(block: Dict[str, Any]) -> bool:
     """Determine if a block is an organizational block."""
     return block.get('layout', {}).get('style') == 'Div' or not block.get('text', {}).get('text', '')
@@ -94,7 +96,7 @@ def convert_block_to_markdown(block: Dict[str, Any], all_blocks: Dict[str, Any],
         table = convert_table_to_markdown(block)
         markdown += apply_indent(table) + "\n"
     else:
-        logging.warning(f"Unknown block type: {block_type}")
+        LOGGER.warning(f"Unknown block type: {block_type}")
         markdown += apply_indent(content) + "\n\n"
 
     # Process other children

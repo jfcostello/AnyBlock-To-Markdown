@@ -7,6 +7,3 @@ def setup_logger(log_level, log_file):
         format='%(asctime)s - %(levelname)s - %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
-
-def get_logger(name):
-    return logging.getLogger(name)

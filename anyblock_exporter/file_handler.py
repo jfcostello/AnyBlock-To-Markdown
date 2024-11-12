@@ -9,6 +9,7 @@ class FileHandler:
     def __init__(self, attachments_folder: str):
         self.attachments_folder = attachments_folder
         self.files_to_copy = {}
+        self.logger = logging.getLogger("anyblock_exporter")
 
     def handle_file_attachment(self, file_info: Dict[str, Any]) -> str:
         file_name = file_info.get('name', 'unnamed_file')
@@ -27,4 +28,4 @@ class FileHandler:
             if os.path.exists(source_path):
                 shutil.copy2(source_path, dest_path)
             else:
-                logging.warning(f"File not found: {source_path}")
+                self.logger.warning(f"File not found: {source_path}")
