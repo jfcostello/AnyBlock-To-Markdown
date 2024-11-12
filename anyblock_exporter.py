@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 from anyblock_exporter import (
@@ -21,7 +22,7 @@ def main():
 
     # Setup logging
     setup_logger(log_level, log_file)
-    logger = get_logger(__name__)
+    logger = logging.getLogger("anyblock_exporter")
 
     logger.info("Starting Anytype to Markdown conversion")
 
